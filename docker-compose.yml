@@ -1,0 +1,38 @@
+services:
+  client:
+      container_name: hydro-harbor-client
+      build:
+        context: ./hydro-harbor-client
+        dockerfile: Dockerfile
+      ports:
+        - 3000:3000
+      depends_on:
+        - server
+      profiles:
+        - prod
+
+  server:
+    container_name: hydro-harbor-server
+    build:
+      context: ./hydro-harbor-server
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+    environment:
+      - DOCKER_DB_URL=mongodb://hydro-harbor-db:27017/hydro-harbor-db
+      - PORT=5000
+    depends_on:
+      - db
+    profiles:
+      - prod
+
+  db:
+    image: mongo
+    container_name: hydro-harbor-db
+    environment:
+      MONGO_INITDB_DATABASE: hydro-harbor-db
+    ports:
+      - 27017:27017
+    profiles:
+      - prod
+      - dev
