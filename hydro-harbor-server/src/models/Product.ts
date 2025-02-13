@@ -1,5 +1,5 @@
 import mongoose, { Model } from "mongoose";
-import { IProduct } from "../types/IProduct";
+import { IProduct } from "../types/models/IProduct";
 
 const productSchema = new mongoose.Schema<IProduct>(
   {
@@ -12,6 +12,10 @@ const productSchema = new mongoose.Schema<IProduct>(
       required: true,
     },
     description: {
+      type: String,
+      required: true,
+    },
+    manufacturer: {
       type: String,
       required: true,
     },
