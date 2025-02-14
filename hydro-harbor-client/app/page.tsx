@@ -1,17 +1,9 @@
-"use client";
-
-import { useAppContext } from "@/context/app-context";
+import Greeting from "./_components/greeting";
 
 export default function Home() {
-  const { globalState } = useAppContext();
-
   return (
     <>
-      {globalState.user ? (
-        <h1>Hello, {globalState.user.fullName}</h1>
-      ) : (
-        <h1>Welcome to the Hydro Harbor store.</h1>
-      )}
+      <Greeting />
     </>
   );
 }

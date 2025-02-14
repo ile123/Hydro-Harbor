@@ -9,7 +9,7 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50">
       <div className="bg-white dark:bg-[#393E46] rounded-lg shadow-lg w-full max-w-md p-6 relative">
         <button
-          className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
+          className="absolute top-3 right-3 text-white hover:text-white"
           onClick={onClose}
         >
           <CloseIcon />
