@@ -32,22 +32,26 @@ export default function NavigationBar() {
                 Home
               </Link>
             </li>
-            <li>
-              <Link
-                href="/products"
-                className="hover:text-gray-200 dark:hover:text-gray-300"
-              >
-                Products
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/profile"
-                className="hover:text-gray-200 dark:hover:text-gray-300"
-              >
-                Profile
-              </Link>
-            </li>
+            {globalState.user !== null && (
+              <li>
+                <Link
+                  href="/products"
+                  className="hover:text-gray-200 dark:hover:text-gray-300"
+                >
+                  Products
+                </Link>
+              </li>
+            )}
+            {globalState.user !== null && (
+              <li>
+                <Link
+                  href="/profile"
+                  className="hover:text-gray-200 dark:hover:text-gray-300"
+                >
+                  Profile
+                </Link>
+              </li>
+            )}
           </div>
 
           <div className="flex space-x-4">

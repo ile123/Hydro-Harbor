@@ -25,7 +25,7 @@ export const login = async (req: Request, res: Response): Promise<any> => {
 
     const token = signJwt(user.email);
     return res.status(200).json({ token: token, fullName: user.fullName });
-  } catch (error: unknown) {
+  } catch (error) {
     console.error(error);
     if (error instanceof Error) {
       return res.status(500).send({ errorMssg: error.message });
@@ -59,7 +59,7 @@ export const register = async (req: Request, res: Response): Promise<any> => {
 
     await newUser.save();
     return res.status(201).json({ result: newUser });
-  } catch (error: unknown) {
+  } catch (error) {
     if (error instanceof Error) {
       console.error(error.message);
       return res.status(500).send({

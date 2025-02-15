@@ -3,7 +3,7 @@
 import { AppContextType } from "@/types/context/AppContextType";
 import { AppState } from "@/types/context/AppState";
 import { CartProduct } from "@/types/product/CartProduct";
-import { ChildrenProp } from "@/types/props/ChildrenProp";
+import { ChildrenProp } from "@/types/props/ChildrenProps";
 import { createContext, useState, useContext } from "react";
 
 const defaultState: AppContextType = {
@@ -17,7 +17,10 @@ const defaultState: AppContextType = {
 const AppContext = createContext(defaultState);
 
 export function AppProvider({ children }: ChildrenProp) {
-  const [globalState, setGlobalState] = useState<AppState>({ user: null, cart: [] });
+  const [globalState, setGlobalState] = useState<AppState>({
+    user: null,
+    cart: [],
+  });
 
   const addToCart = (item: CartProduct) => {
     setGlobalState((prevState) => {
@@ -34,16 +37,31 @@ export function AppProvider({ children }: ChildrenProp) {
           ),
         };
       } else {
-        return { ...prevState, cart: [...prevState.cart, item] };
+        return {
+          ...prevState,
+          cart: [...prevState.cart, item],
+        };
       }
     });
   };
 
   const removeFromCart = (itemId: number) => {
-    setGlobalState((prevState) => ({
-      ...prevState,
-      cart: prevState.cart.filter((item: CartProduct) => item.id !== itemId),
-    }));
+    const item = globalState.cart.find((item) => item.id === itemId);
+    if (item?.quantity === 1) {
+      setGlobalState((prevState) => ({
+        ...prevState,
+        cart: prevState.cart.filter((item: CartProduct) => item.id !== itemId),
+      }));
+    } else {
+      setGlobalState((prevState) => ({
+        ...prevState,
+        cart: prevState.cart.map((cartItem: CartProduct) =>
+          cartItem.id === itemId
+            ? { ...cartItem, quantity: cartItem.quantity - 1 }
+            : cartItem
+        ),
+      }));
+    }
   };
 
   const clearCart = () => {
@@ -55,7 +73,13 @@ export function AppProvider({ children }: ChildrenProp) {
 
   return (
     <AppContext.Provider
-      value={{ globalState, setGlobalState, addToCart, removeFromCart, clearCart }}
+      value={{
+        globalState,
+        setGlobalState,
+        addToCart,
+        removeFromCart,
+        clearCart,
+      }}
     >
       {children}
     </AppContext.Provider>

@@ -21,23 +21,24 @@ export const verifyJwt = (
   req: Request,
   res: Response,
   next: NextFunction
-): Response | void => {
+): void => {
   const authorization = req.header("authorization");
   if (!authorization || !authorization.startsWith("Bearer ")) {
-    return res
-      .status(401)
-      .send({ errorMssg: "Missing or invalid bearer token" });
+    res.status(401).send({ errorMssg: "Missing or invalid bearer token" });
+    return;
   }
 
   const token = authorization.split("Bearer ")[1];
 
   if (!token) {
-    return res.status(401).send({ errorMssg: "Missing token" });
+    res.status(401).send({ errorMssg: "Missing token" });
+    return;
   }
 
   jwt.verify(token, config.JWT_SECRET || "", (err, payload) => {
     if (err || !payload || typeof payload !== "object" || !("sub" in payload)) {
-      return res.status(401).send({ errorMssg: "Unauthorized" });
+      res.status(401).send({ errorMssg: "Unauthorized" });
+      return;
     }
     (req as any).user = payload;
     next();

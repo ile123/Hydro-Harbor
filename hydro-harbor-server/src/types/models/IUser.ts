@@ -1,5 +1,5 @@
-import { IFavorite } from "./models/IFavorite";
-import { IPurchase } from "./models/IPurchase";
+import { IFavorite } from "./IFavorite";
+import { IPurchase } from "./IPurchase";
 
 export type IUser = {
   fullName: string;

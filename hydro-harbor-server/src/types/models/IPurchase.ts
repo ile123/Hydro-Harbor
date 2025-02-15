@@ -1,6 +1,8 @@
-import { Types } from "mongoose";
+import mongoose from "mongoose";
 
 export type IPurchase = {
-  product: Types.ObjectId;
+  user: mongoose.Schema.Types.ObjectId;
+  products: mongoose.Schema.Types.ObjectId[];
+  totalAmount: number;
   purchaseDate: Date;
 };

@@ -16,12 +16,7 @@ const userSchema = new mongoose.Schema<IUser>(
       type: String,
       required: true,
     },
-    purchases: [
-      {
-        product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
-        purchaseDate: { type: Date, default: Date.now },
-      },
-    ],
+    purchases: [{ type: mongoose.Schema.Types.ObjectId, ref: "Purchase" }],
     favorites: [
       {
         product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
