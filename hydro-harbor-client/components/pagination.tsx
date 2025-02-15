@@ -1,4 +1,4 @@
-import { PaginationProps } from "@/types/components/PaginationProps";
+import { PaginationProps } from "@/types/props/PaginationProps";
 
 export default function Pagination({
   currentPage,
@@ -20,7 +20,7 @@ export default function Pagination({
           onClick={() => handleClick(i)}
           disabled={i === currentPage}
           className={`p-2 mx-1 rounded ${
-            i === currentPage ? "bg-blue-500 text-white" : "bg-gray-200"
+            i === currentPage ? "bg-blue-500 text-white" : "bg-gray-200 text-dark dark:bg-[#393E46] dark:text-white"
           }`}
         >
           {i}
@@ -33,7 +33,7 @@ export default function Pagination({
   return (
     <div className="flex justify-center items-center mt-4">
       <button
-        className="p-2 mx-1 bg-gray-200 rounded"
+        className="p-2 mx-1 bg-gray-200 text-dark dark:bg-[#393E46] dark:text-white rounded"
         onClick={() => handleClick(currentPage - 1)}
         disabled={currentPage === 1}
       >
@@ -41,7 +41,7 @@ export default function Pagination({
       </button>
       {renderPageNumbers()}
       <button
-        className="p-2 mx-1 bg-gray-200 rounded"
+        className="p-2 mx-1 bg-gray-200 text-dark dark:bg-[#393E46] dark:text-white rounded"
         onClick={() => handleClick(currentPage + 1)}
         disabled={currentPage === totalPages}
       >

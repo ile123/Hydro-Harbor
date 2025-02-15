@@ -6,19 +6,20 @@ import ProductList from "./_components/product-list";
 import Pagination from "@/components/pagination";
 import { fetchProducts } from "@/lib/product";
 import { fetchManufacturers } from "@/lib/manufacturer";
+import { Product } from "@/types/product/Product";
 
 const PAGE_SIZE = 12;
 
 export default function Products() {
-  const [currentSort, setSort] = useState("price");
-  const [currentOrder, setOrder] = useState("asc");
+  const [currentSort, setSort] = useState("");
+  const [currentOrder, setOrder] = useState("");
   const [currentFilter, setFilter] = useState({
     manufacturer: "all",
     minPrice: 0,
     maxPrice: 10000,
   });
   const [currentPage, setPage] = useState(1);
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [manufacturers, setManufacturers] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
 
@@ -52,20 +53,35 @@ export default function Products() {
     setPage(newPage);
   };
 
+  const handleFavoriteToggle = (id: string) => {
+    setFilteredProducts((prevProducts) =>
+      prevProducts.map((product) =>
+        product.id === id
+          ? { ...product, isFavorite: !product.isFavorite }
+          : product
+      )
+    );
+  };
+
   return (
-    <div className="p-4">
-      <SortOptions
-        sort={currentSort}
-        setSort={setSort}
-        order={currentOrder}
-        setOrder={setOrder}
+    <div className="flex flex-col p-4">
+      <div className="flex flex-wrap gap-4 mb-4">
+        <SortOptions
+          sort={currentSort}
+          setSort={setSort}
+          order={currentOrder}
+          setOrder={setOrder}
+        />
+        <FilterOptions
+          filter={currentFilter}
+          setFilter={setFilter}
+          manufacturers={manufacturers}
+        />
+      </div>
+      <ProductList
+        products={filteredProducts}
+        onFavoriteToggle={handleFavoriteToggle}
       />
-      <FilterOptions
-        filter={currentFilter}
-        setFilter={setFilter}
-        manufacturers={manufacturers}
-      />
-      <ProductList products={filteredProducts} />
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}

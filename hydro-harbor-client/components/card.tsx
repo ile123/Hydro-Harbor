@@ -1,4 +1,4 @@
-import { CardProps } from "@/types/components/CardProps";
+import { CardProps } from "@/types/props/CardProps";
 
 export default function Card({ children, className = "" }: CardProps) {
   return (

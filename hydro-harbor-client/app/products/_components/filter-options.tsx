@@ -1,4 +1,4 @@
-import { ProductFilterProps } from "@/types/product/ProductFilterProps";
+import { ProductFilterProps } from "@/types/props/ProductFilterProps";
 
 export default function FilterOptions({
   filter,
@@ -8,17 +8,26 @@ export default function FilterOptions({
   return (
     <div className="mb-4">
       <label className="mr-4">
-        Filter by Manufacturer:
+        Manufacturer:
         <select
-          className="ml-2 p-1 border rounded"
+          className="ml-2 p-1 border rounded dark:bg-[#282C34] text-dark dark:text-white"
           value={filter.manufacturer}
           onChange={(e) =>
             setFilter({ ...filter, manufacturer: e.target.value })
           }
         >
-          <option value="all">All</option>
+          <option
+            value="all"
+            className="dark:bg-[#282C34] text-dark dark:text-white"
+          >
+            All
+          </option>
           {manufacturers.map((manufacturer) => (
-            <option key={manufacturer.id} value={manufacturer.name}>
+            <option
+              key={manufacturer.id}
+              value={manufacturer.name}
+              className="dark:bg-[#282C34] text-dark dark:text-white"
+            >
               {manufacturer.name}
             </option>
           ))}
@@ -29,7 +38,7 @@ export default function FilterOptions({
         <input
           type="number"
           placeholder="Min Price"
-          className="ml-2 p-1 border rounded"
+          className="ml-2 p-1 border rounded dark:bg-[#282C34] text-dark dark:text-white"
           value={filter.minPrice}
           onChange={(e) =>
             setFilter({ ...filter, minPrice: parseFloat(e.target.value) })
@@ -38,7 +47,7 @@ export default function FilterOptions({
         <input
           type="number"
           placeholder="Max Price"
-          className="ml-2 p-1 border rounded"
+          className="ml-2 p-1 border rounded dark:bg-[#282C34] text-dark dark:text-white"
           value={filter.maxPrice}
           onChange={(e) =>
             setFilter({ ...filter, maxPrice: parseFloat(e.target.value) })
