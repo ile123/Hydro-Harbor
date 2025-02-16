@@ -3,7 +3,7 @@
 import { useAppContext } from "@/context/app-context";
 import { CartProduct } from "@/types/product/CartProduct";
 
-export default function RemoveFromCard({ id }: Pick<CartProduct, "id">) {
+export default function RemoveFromCart({ id }: Pick<CartProduct, "id">) {
   const { removeFromCart } = useAppContext();
 
   const removeProductFromCartHandler = () => {
@@ -12,7 +12,12 @@ export default function RemoveFromCard({ id }: Pick<CartProduct, "id">) {
 
   return (
     <>
-      <button onClick={removeProductFromCartHandler}>-</button>
+      <button
+        onClick={removeProductFromCartHandler}
+        className="text-dark dark:text-white text-5xl hover:text-red-500 pb-1"
+      >
+        -
+      </button>
     </>
   );
 }

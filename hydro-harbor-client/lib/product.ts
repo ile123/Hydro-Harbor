@@ -53,10 +53,39 @@ export const fetchProducts = async (
 
 export const fetchProductById = async (productId: string) => {
   try {
-    console.log(productId);
     const token = Cookies.get("token");
     const response = await axios.get(
       `http://localhost:5000/api/products/${productId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return {
+      status: response.status,
+      data: response.data.result,
+    };
+  } catch (exception) {
+    if (axios.isAxiosError(exception)) {
+      return {
+        status: exception.response?.status || 500,
+        errorMessage: exception.response?.data.errorMssg || "Unknown error",
+      };
+    }
+
+    return {
+      status: 500,
+      errorMessage: "Internal server error",
+    };
+  }
+};
+
+export const fetchProductsByOrder = async (orderId: string) => {
+  try {
+    const token = Cookies.get("token");
+    const response = await axios.get(
+      `http://localhost:5000/api/products/order/${orderId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

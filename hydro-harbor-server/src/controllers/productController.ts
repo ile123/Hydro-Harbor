@@ -4,6 +4,8 @@ import { getUserByToken } from "./userController";
 import { IUser } from "../types/models/IUser";
 import { parseProductQueryParameters } from "../utils/queryHelper";
 import { IFavorite } from "../types/models/IFavorite";
+import { CartProduct } from "../types/product/CartProduct";
+import Purchase from "../models/Purchase";
 
 export const getAllProducts = async (
   req: Request,
@@ -98,6 +100,45 @@ export const getProductById = async (
   }
 };
 
+export const getProductsByOrder = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res
+        .status(400)
+        .json({ errorMssg: "Product id was not provided." });
+    }
+    const order = await Purchase.findById(id).populate("products");
+    if (!order) {
+      return res
+        .status(400)
+        .json({ errorMssg: `Product with id ${id} not found.` });
+    }
+    const mappedProducts = await Promise.all(
+      order?.products.map(async (item) => {
+        const product = await Product.findById(item.product).exec();
+        return {
+          id: product?._id,
+          name: product?.name,
+          price: product?.price,
+          quantity: item.quantity,
+          imageUrl: product?.imageUrl,
+        };
+      })
+    );
+
+    return res.status(200).json({
+      result: mappedProducts,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({ errorMssg: "Internal Server Error" });
+  }
+};
+
 export const addProductToFavorite = async (
   req: Request,
   res: Response
@@ -142,6 +183,50 @@ export const addProductToFavorite = async (
         ? "Product added to your favorites."
         : "Product removed from your favorites.",
     });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({ errorMssg: "Internal Server Error" });
+  }
+};
+
+export const purchaseProducts = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  try {
+    const { products } = req.body;
+    const productIds = products.map((item: CartProduct) => item.id);
+
+    const foundProducts = await Product.find({
+      _id: { $in: productIds },
+    }).exec();
+    if (foundProducts.length !== productIds.length) {
+      return res.status(500).json({
+        errorMssg: "Some products with given ids could not be found.",
+      });
+    }
+
+    const user = await getUserByToken(req, res);
+    if (!user) {
+      return res.status(400).json({ errorMssg: "User not found." });
+    }
+
+    const purchasedProducts = products.map(
+      (product: CartProduct, index: number) => ({
+        quantity: product.quantity,
+        product: foundProducts[index],
+      })
+    );
+
+    const newPurchase = new Purchase({
+      user,
+      products: purchasedProducts,
+    });
+    user.purchases.push(newPurchase);
+    await newPurchase.save();
+    await user.save();
+
+    return res.status(200).json({ result: "Products have been bought." });
   } catch (error) {
     console.error(error);
     return res.status(500).send({ errorMssg: "Internal Server Error" });

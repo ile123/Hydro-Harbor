@@ -24,7 +24,7 @@ export const login = async (req: Request, res: Response): Promise<any> => {
     }
 
     const token = signJwt(user.email);
-    return res.status(200).json({ token: token, fullName: user.fullName });
+    return res.status(200).json({ token: token, fullName: user.fullName, email: user.email });
   } catch (error) {
     console.error(error);
     if (error instanceof Error) {

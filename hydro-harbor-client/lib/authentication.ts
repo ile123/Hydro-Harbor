@@ -11,6 +11,7 @@ export const login = async (formData: LoginValues) => {
       status: response.status,
       token: response.data.token,
       fullName: response.data.fullName,
+      email: response.data.email
     };
   } catch (exception) {
     if (axios.isAxiosError(exception)) {

@@ -7,6 +7,8 @@ import { ProductProps } from "@/types/props/ProductProps";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import AddToCart from "@/components/add-to-cart";
+import RemoveFromCart from "@/components/remove-from-cart";
+import { useAppContext } from "@/context/app-context";
 
 export default function ProductDetails({ id }: ProductProps) {
   const [fetchedProduct, setFetchedProduct] = useState<Product>({
@@ -18,6 +20,8 @@ export default function ProductDetails({ id }: ProductProps) {
     imageUrl: "",
     isFavorite: false,
   });
+
+  const { getProductAmountFromCart } = useAppContext();
 
   useEffect(() => {
     const getProduct = async () => {
@@ -38,7 +42,7 @@ export default function ProductDetails({ id }: ProductProps) {
 
   return (
     <>
-      <Card>
+      <Card className="ring">
         {fetchedProduct.id === "" ? (
           <h3>Loading...</h3>
         ) : (
@@ -62,12 +66,15 @@ export default function ProductDetails({ id }: ProductProps) {
             <p className="mb-4 text-black dark:text-white">
               {fetchedProduct.description}
             </p>
-            <div className="mx-auto">
+            <div className="flex justify-center space-x-8">
+              <RemoveFromCart id={fetchedProduct.id} />
               <AddToCart
                 id={fetchedProduct.id}
                 name={fetchedProduct.name}
+                price={fetchedProduct.price}
                 imageUrl={fetchedProduct.imageUrl}
               />
+              {getProductAmountFromCart(id) > 0 && <h3 className="text-dark dark:text-white text-3xl pt-1">({getProductAmountFromCart(id)})</h3>}
             </div>
           </div>
         )}

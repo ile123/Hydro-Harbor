@@ -1,3 +1,5 @@
+import Product from "../models/Product";
+import Purchase from "../models/Purchase";
 import User from "../models/User";
 import { extractEmail } from "../utils/jwtHelper";
 import { Request, Response } from "express";
@@ -7,40 +9,63 @@ export const getAllUsers = async (
   res: Response
 ): Promise<any> => {
   const users = await User.find({});
-  if(users.length === 0) {
-    return res.status(404).json({ errorMssg: "No users were found in the db." })
+  if (users.length === 0) {
+    return res
+      .status(404)
+      .json({ errorMssg: "No users were found in the db." });
   }
   const mappedUsers = users.map((item) => {
     return {
       id: item._id,
       fullName: item.fullName,
-      email: item.email
-    }
+      email: item.email,
+    };
   });
   return res.status(200).json({ result: mappedUsers });
 };
 
-//finish later
-export const getUserById = async (
+export const getUserPurchasesAndFavorites = async (
   req: Request,
   res: Response
 ): Promise<any> => {
   try {
-    const { id } = req.params;
-    if (!id) {
-      return res
-        .status(400)
-        .json({ errorMssg: "Product id was not provided." });
+    const { email } = req.params;
+    if (!email) {
+      return res.status(400).json({ errorMssg: "User email was not provided." });
     }
-    const product = await User.findById(id);
-    if (!product) {
+    const user = await User.findOne({ email: email })
+      .populate("purchases")
+      .populate("favorites");
+    if (!user) {
       return res
         .status(400)
-        .json({ errorMssg: `Product with id ${id} not found.` });
+        .json({ errorMssg: `User with email ${email} not found.` });
     }
 
+    const allPurchases = (await Purchase.find({ user: user })).map((item) => {
+      return {
+        id: item._id,
+        purchaseDate: item.purchaseDate,
+      };
+    });
+
+    const allFavorites = await Promise.all(
+      user.favorites.map(async (item) => {
+        const product = await Product.findById(item.product._id);
+        return {
+          id: product?._id,
+          imageUrl: product?.imageUrl,
+          name: product?.name,
+          dateAddedToFavorites: item.dateAddedToFavorites,
+        };
+      })
+    );
+
     return res.status(200).json({
-      result: {},
+      result: {
+        purchases: allPurchases,
+        favorites: allFavorites,
+      },
     });
   } catch (error) {
     console.error(error);
