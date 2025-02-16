@@ -12,6 +12,9 @@ const defaultState: AppContextType = {
   addToCart: () => {},
   removeFromCart: () => {},
   clearCart: () => {},
+  getProductAmountFromCart: () => 0,
+  getTotalProductAmountFromCart: () => 0,
+  getTotalPriceFromCart: () => 0,
 };
 
 const AppContext = createContext(defaultState);
@@ -45,7 +48,7 @@ export function AppProvider({ children }: ChildrenProp) {
     });
   };
 
-  const removeFromCart = (itemId: number) => {
+  const removeFromCart = (itemId: string) => {
     const item = globalState.cart.find((item) => item.id === itemId);
     if (item?.quantity === 1) {
       setGlobalState((prevState) => ({
@@ -71,6 +74,27 @@ export function AppProvider({ children }: ChildrenProp) {
     }));
   };
 
+  const getProductAmountFromCart = (productId: string): number => {
+    const product = globalState.cart.find(
+      (item: CartProduct) => item.id === productId
+    );
+    return product ? product.quantity : 0;
+  };
+
+  const getTotalProductAmountFromCart = (): number => {
+    return globalState.cart.reduce(
+      (total, item: CartProduct) => total + item.quantity,
+      0
+    );
+  };
+
+  const getTotalPriceFromCart = (): number => {
+    return globalState.cart.reduce(
+      (total, item: CartProduct) => total + (item.price * item.quantity),
+      0
+    );
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -79,6 +103,9 @@ export function AppProvider({ children }: ChildrenProp) {
         addToCart,
         removeFromCart,
         clearCart,
+        getProductAmountFromCart,
+        getTotalProductAmountFromCart,
+        getTotalPriceFromCart,
       }}
     >
       {children}

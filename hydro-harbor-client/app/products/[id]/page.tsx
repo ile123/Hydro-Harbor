@@ -1,7 +1,7 @@
 "use client";
 
 import { ProductProps } from "@/types/props/ProductProps";
-import ProductDetails from "./_components/ProductDetails";
+import ProductDetails from "./_components/product-details";
 import { useParams } from "next/navigation";
 
 export default function ProductPage() {

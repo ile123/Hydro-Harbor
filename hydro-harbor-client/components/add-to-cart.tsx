@@ -6,8 +6,9 @@ import { CartProduct } from "@/types/product/CartProduct";
 export default function AddToCart({
   id,
   name,
+  price,
   imageUrl,
-}: Pick<CartProduct, "id" | "name" | "imageUrl">) {
+}: Pick<CartProduct, "id" | "name" | "price" | "imageUrl">) {
   const { addToCart } = useAppContext();
 
   const addProductToCartHandler = () => {
@@ -15,13 +16,14 @@ export default function AddToCart({
       id: id,
       name: name,
       imageUrl: imageUrl,
+      price: price,
       quantity: 1,
     } as CartProduct);
   };
 
   return (
     <>
-      <button onClick={addProductToCartHandler} className="text-dark dark:text-white text-4xl hover:text-blue-500">Add to cart +</button>
+      <button onClick={addProductToCartHandler} className="text-dark dark:text-white text-5xl hover:text-blue-500">+</button>
     </>
   );
 }

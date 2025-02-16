@@ -30,12 +30,12 @@ export default function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { status, token, fullName, errorMessage } = await login(formData);
+    const { status, token, fullName, email, errorMessage } = await login(formData);
     if (status === 200) {
       cookies.set("token", token);
       setGlobalState((prevState) => ({
         ...prevState,
-        user: { fullName },
+        user: { fullName: fullName, email: email },
       }));
       redirect("/products");
     } else {

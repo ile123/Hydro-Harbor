@@ -1,4 +1,4 @@
-import { ProductFilter } from "./ProductFilter";
+import { ProductFilter } from "../product/ProductFilter";
 
 export type ProductFilterProps = {
   filter: ProductFilter;
