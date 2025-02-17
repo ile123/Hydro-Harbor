@@ -1,6 +1,9 @@
+import { config } from "@/config/dotenv";
 import { ProductFilter } from "@/types/product/ProductFilter";
 import axios from "axios";
 import Cookies from "js-cookie";
+
+const API_URL = config.BACKEND_URL;
 
 export const fetchProducts = async (
   sort: string,
@@ -22,7 +25,7 @@ export const fetchProducts = async (
     });
 
     const response = await axios.get(
-      `http://localhost:5000/api/products?${query.toString()}`,
+      `${API_URL}/products?${query.toString()}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -54,14 +57,11 @@ export const fetchProducts = async (
 export const fetchProductById = async (productId: string) => {
   try {
     const token = Cookies.get("token");
-    const response = await axios.get(
-      `http://localhost:5000/api/products/${productId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await axios.get(`${API_URL}/products/${productId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return {
       status: response.status,
       data: response.data.result,
@@ -84,14 +84,11 @@ export const fetchProductById = async (productId: string) => {
 export const fetchProductsByOrder = async (orderId: string) => {
   try {
     const token = Cookies.get("token");
-    const response = await axios.get(
-      `http://localhost:5000/api/products/order/${orderId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await axios.get(`${API_URL}/products/order/${orderId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return {
       status: response.status,
       data: response.data.result,
@@ -115,7 +112,7 @@ export const addProductToFavorite = async (productId: string) => {
   try {
     const token = Cookies.get("token");
     const response = await axios.patch(
-      `http://localhost:5000/api/products/add-to-favorites/${productId}`,
+      `${API_URL}/products/add-to-favorites/${productId}`,
       {},
       {
         headers: {

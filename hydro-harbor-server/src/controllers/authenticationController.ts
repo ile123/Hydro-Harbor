@@ -3,6 +3,13 @@ import { signJwt } from "../utils/jwtHelper";
 import User from "../models/User";
 import bcrypt from "bcrypt";
 
+/**
+ * This function authenticates the user with the given email and password.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {String} A signed jwt used for future request verification.
+ */
+
 export const login = async (req: Request, res: Response): Promise<any> => {
   try {
     const { email, password } = req.body;
@@ -34,6 +41,13 @@ export const login = async (req: Request, res: Response): Promise<any> => {
     }
   }
 };
+
+/**
+ * This function registers the user with the given data.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Object} User object as proof of successful registration. 
+ */
 
 export const register = async (req: Request, res: Response): Promise<any> => {
   try {

@@ -1,4 +1,4 @@
-### HYDRO HARBOR
+ ### HYDRO HARBOR
 
 ### How to run
 
@@ -13,5 +13,5 @@ This is how to run the app on someone's local machine
 - `sudo docker compose --profile local up`
 
 #### Dockerized:
-This is how to run the app with Docker
+This is how to run the app with Docker(NOTE: This version of the app dose not work as of now, so please use only the local version)
 - `sudo docker compose --profile dockerized up`

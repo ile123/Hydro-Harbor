@@ -42,7 +42,7 @@ export default function OrderProductsList({ orderId }: ProductOrderProps) {
                     className="object-cover w-48 h-48 mx-auto mb-4"
                   />
                   <h3 className="text-center">Name: {item.name}</h3>
-                  <h3 className="text-center">Price: {item.price}</h3>
+                  <h3 className="text-center">Price: {item.price.toFixed(2)} $</h3>
                   <h3 className="text-center">Quantity: {item.quantity}</h3>
                 </Link>
               </div>

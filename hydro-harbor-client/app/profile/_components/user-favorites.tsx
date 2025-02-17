@@ -4,6 +4,15 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function UserFavorites({ favorites }: UserFavoritesProps) {
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear().toString();
+
+    return `${day}-${month}-${year}`;
+  };
+
   return (
     <>
       <Card className="w-96 h-96 overflow-y-auto">
@@ -14,10 +23,7 @@ export default function UserFavorites({ favorites }: UserFavoritesProps) {
         ) : (
           <div>
             {favorites.map((item, key) => (
-              <Card
-                key={key}
-                className="shadow-grey-300 dark:shadow-slate-600 mb-4 ring"
-              >
+              <Card key={key} className="bg-white dark:bg-[#222831] mb-4 ring">
                 <Link href={`/products/${item.id}`}>
                   <Image
                     src={item.imageUrl}
@@ -30,7 +36,7 @@ export default function UserFavorites({ favorites }: UserFavoritesProps) {
                     Name - {item.name}
                   </h3>
                   <h3 className="text-dark dark:text-white">
-                    Date added - {item.dateAddedToFavorites}
+                    Date added - {formatDate(item.dateAddedToFavorites)}
                   </h3>
                 </Link>
               </Card>

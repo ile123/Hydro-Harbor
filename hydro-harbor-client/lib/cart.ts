@@ -1,6 +1,9 @@
+import { config } from "@/config/dotenv";
 import { CartProduct } from "@/types/product/CartProduct";
 import axios from "axios";
 import Cookies from "js-cookie";
+
+const API_URL = config.BACKEND_URL;
 
 export const buyProducts = async (products: CartProduct[]) => {
   try {
@@ -12,7 +15,7 @@ export const buyProducts = async (products: CartProduct[]) => {
       };
     });
     const response = await axios.post(
-      `http://localhost:5000/api/products/purchase`,
+      `${API_URL}/products/purchase`,
       { products: mappedProducts },
       {
         headers: {

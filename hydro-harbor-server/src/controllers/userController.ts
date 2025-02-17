@@ -4,6 +4,13 @@ import User from "../models/User";
 import { extractEmail } from "../utils/jwtHelper";
 import { Request, Response } from "express";
 
+/**
+ * Return an array of users.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Array} The array of users.
+ */
+
 export const getAllUsers = async (
   req: Request,
   res: Response
@@ -24,6 +31,13 @@ export const getAllUsers = async (
   return res.status(200).json({ result: mappedUsers });
 };
 
+/**
+ * Based on a given user email, return the users orders and favorites.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Array} The array of users orders and favorites.
+ */
+
 export const getUserPurchasesAndFavorites = async (
   req: Request,
   res: Response
@@ -31,7 +45,9 @@ export const getUserPurchasesAndFavorites = async (
   try {
     const { email } = req.params;
     if (!email) {
-      return res.status(400).json({ errorMssg: "User email was not provided." });
+      return res
+        .status(400)
+        .json({ errorMssg: "User email was not provided." });
     }
     const user = await User.findOne({ email: email })
       .populate("purchases")
@@ -72,6 +88,13 @@ export const getUserPurchasesAndFavorites = async (
     return res.status(500).send({ errorMssg: "Internal Server Error" });
   }
 };
+
+/**
+ * Given a jwt token, return a user.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Object} The user document.
+ */
 
 export const getUserByToken = async (
   req: Request,

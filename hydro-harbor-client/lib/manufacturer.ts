@@ -1,16 +1,16 @@
+import { config } from "@/config/dotenv";
 import axios from "axios";
 import Cookies from "js-cookie";
 
+const API_URL = config.BACKEND_URL;
+
 export const fetchManufacturers = async () => {
   try {
-    const response = await axios.get(
-      "http://localhost:5000/api/manufacturers",
-      {
-        headers: {
-          Authorization: `Bearer ${Cookies.get("token")}`,
-        },
-      }
-    );
+    const response = await axios.get(`${API_URL}/manufacturers`, {
+      headers: {
+        Authorization: `Bearer ${Cookies.get("token")}`,
+      },
+    });
     return {
       status: response.status,
       data: response.data.result,

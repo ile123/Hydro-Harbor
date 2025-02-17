@@ -14,6 +14,7 @@ const pruchaseSchema = new mongoose.Schema<IPurchase>(
         },
       },
     ],
+    totalAmount: Number,
     purchaseDate: { type: Date, default: Date.now },
   },
   { timestamps: true }

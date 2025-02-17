@@ -1,8 +1,9 @@
+import { config } from "@/config/dotenv";
 import { LoginValues } from "@/types/authentication/LoginValues";
 import { RegisterValues } from "@/types/authentication/RegisterValues";
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api";
+const API_URL = config.BACKEND_URL;
 
 export const login = async (formData: LoginValues) => {
   try {
@@ -11,7 +12,7 @@ export const login = async (formData: LoginValues) => {
       status: response.status,
       token: response.data.token,
       fullName: response.data.fullName,
-      email: response.data.email
+      email: response.data.email,
     };
   } catch (exception) {
     if (axios.isAxiosError(exception)) {
@@ -31,7 +32,6 @@ export const login = async (formData: LoginValues) => {
 export const register = async (formData: RegisterValues) => {
   try {
     const response = await axios.post(`${API_URL}/auth/register`, formData);
-
     return {
       status: response.status,
     };

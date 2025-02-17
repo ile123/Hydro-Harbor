@@ -28,6 +28,6 @@ app.get("/health", (_req: Request, res: Response) => {
   res.status(200).send("Server is running");
 });
 
-app.listen(config.PORT, () => {
-  console.log(`Server is running on PORT: ${config.PORT}`);
+app.listen(5000, () => {
+  console.log(`Server is running on PORT: ${5000}`);
 });

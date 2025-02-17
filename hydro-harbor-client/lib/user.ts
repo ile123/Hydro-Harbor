@@ -1,11 +1,14 @@
+import { config } from "@/config/dotenv";
 import axios from "axios";
 import Cookies from "js-cookie";
+
+const API_URL = config.BACKEND_URL;
 
 export const fetchUsers = async () => {
   try {
     const token = Cookies.get("token");
 
-    const response = await axios.get(`http://localhost:5000/api/users`, {
+    const response = await axios.get(`${API_URL}/users`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -34,7 +37,7 @@ export const fetchUserOrdersAndFavorites = async (email: string) => {
   try {
     const token = Cookies.get("token");
     const response = await axios.get(
-      `http://localhost:5000/api/users/orders-and-favorites/${email}`,
+      `${API_URL}/users/orders-and-favorites/${email}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

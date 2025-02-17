@@ -6,6 +6,14 @@ import { parseProductQueryParameters } from "../utils/queryHelper";
 import { IFavorite } from "../types/models/IFavorite";
 import { CartProduct } from "../types/product/CartProduct";
 import Purchase from "../models/Purchase";
+import { MappedCartProduct } from "../types/product/MappedCartProduct";
+
+/**
+ * Return an array of products based on the query parameters.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Array} The array of products.
+ */
 
 export const getAllProducts = async (
   req: Request,
@@ -62,6 +70,13 @@ export const getAllProducts = async (
   }
 };
 
+/**
+ * Return a product based on the given id.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Object} The product with the given id.
+ */
+
 export const getProductById = async (
   req: Request,
   res: Response
@@ -99,6 +114,13 @@ export const getProductById = async (
     return res.status(500).send({ errorMssg: "Internal Server Error" });
   }
 };
+
+/**
+ * Return an product based on the given order id. This is used for getting all of the products from a order.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Array} The array of products from a order.
+ */
 
 export const getProductsByOrder = async (
   req: Request,
@@ -138,6 +160,13 @@ export const getProductsByOrder = async (
     return res.status(500).send({ errorMssg: "Internal Server Error" });
   }
 };
+
+/**
+ * Adds a product to the users favorite collection.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {String} The string that indicates if the product was added/removed from favorites.
+ */
 
 export const addProductToFavorite = async (
   req: Request,
@@ -189,6 +218,22 @@ export const addProductToFavorite = async (
   }
 };
 
+/**
+ * This function receives a list of products and processes the purchase.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @example
+ * // Example usage:
+ * // The body of the request would contain a list of products (with ids and quantities):
+ * // {
+ * //   "products": [
+ * //     { "id": "ObjectId-1", "quantity": 2 },
+ * //     { "id": "ObjectId-2", "quantity": 1 }
+ * //   ]
+ * // }
+ * @returns {String} The string that indicates if the products were purchased.
+ */
+
 export const purchaseProducts = async (
   req: Request,
   res: Response
@@ -218,9 +263,17 @@ export const purchaseProducts = async (
       })
     );
 
+    const totalAmount = purchasedProducts.reduce(
+      (sum: number, item: MappedCartProduct) =>
+        sum + item.product.price * item.quantity,
+      0
+    );
+
     const newPurchase = new Purchase({
       user,
       products: purchasedProducts,
+      totalAmount: totalAmount,
+      purchaseDate: Date.now()
     });
     user.purchases.push(newPurchase);
     await newPurchase.save();

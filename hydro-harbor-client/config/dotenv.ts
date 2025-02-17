@@ -6,9 +6,8 @@ import path from 'path';
  * .env file is should be located in the same directory as the docker-compose.yml file.
  */
 
-dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 export const config = {
-  DB_URL: process.env.DB_URL || '',
-  JWT_SECRET: process.env.JWT_SECRET || ''
+  BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000/api'
 };

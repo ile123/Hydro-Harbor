@@ -1,5 +1,11 @@
 import Manufacturer from "../models/Manufacturer";
 
+/**
+ * This function takes all of the request queries, and from them creates objects that will be used during Product document querying(sorting and filtering).
+ * @param {Request} req - Request object that contains all of the needed query parameters,
+ * @returns {Object} A object that contains objects that will be used for sorting and filtering.
+ */
+
 export const parseProductQueryParameters = async (query: any) => {
   const {
     sortBy,

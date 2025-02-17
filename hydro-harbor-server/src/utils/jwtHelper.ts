@@ -2,6 +2,12 @@ import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { config } from "../config/dotenv";
 
+/**
+ * This function creates and signs a jwt token using the users email.
+ * @param {String} user_email - The user email.
+ * @returns {String} A signed jwt used for future request verification.
+ */
+
 export const signJwt = (user_email: string): string => {
   const expirationTime = "1h";
   if (!config.JWT_SECRET) {
@@ -16,6 +22,13 @@ export const signJwt = (user_email: string): string => {
     throw new Error("Failed to sign JWT");
   }
 };
+
+/**
+ * This is a middleware function that verifies the jwt token on each request.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Object} next - The NextFunction object required for middleware to work.
+ */
 
 export const verifyJwt = (
   req: Request,
@@ -44,6 +57,12 @@ export const verifyJwt = (
     next();
   });
 };
+
+/**
+ * This function extracts the users email from the jwt token.
+ * @param {String} authHeader - The authentication header from the request.
+ * @returns {String} Users email.
+ */
 
 export const extractEmail = (
   authHeader: string | undefined,

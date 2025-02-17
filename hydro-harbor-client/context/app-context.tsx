@@ -25,6 +25,11 @@ export function AppProvider({ children }: ChildrenProp) {
     cart: [],
   });
 
+  /**
+   * This function takes a object of type CartProduct, if it is already present in the cart the quantity is incremented by 1, if it is not present then it will add it to the cart.
+   * @param {String} itemId - The product id.
+   */
+
   const addToCart = (item: CartProduct) => {
     setGlobalState((prevState) => {
       const existingItem = prevState.cart.find(
@@ -48,6 +53,11 @@ export function AppProvider({ children }: ChildrenProp) {
     });
   };
 
+  /**
+   * This function takes a itemId, finds the product and decreases the quantity from inside the cart, if the quantity is 1 then it is removed from the cart.
+   * @param {String} itemId - The product id.
+   */
+
   const removeFromCart = (itemId: string) => {
     const item = globalState.cart.find((item) => item.id === itemId);
     if (item?.quantity === 1) {
@@ -67,12 +77,22 @@ export function AppProvider({ children }: ChildrenProp) {
     }
   };
 
+  /**
+   * This function clears the entire cart and makes it empty.
+   */
+
   const clearCart = () => {
     setGlobalState((prevState) => ({
       ...prevState,
       cart: [],
     }));
   };
+
+  /**
+   * This function takes a productId, finds the product with that id inside the cart and returns the quantity.
+   * @param {String} productId - The products id.
+   * @returns {Number} A number representing the quantity of product inside the cart.
+   */
 
   const getProductAmountFromCart = (productId: string): number => {
     const product = globalState.cart.find(
@@ -81,6 +101,11 @@ export function AppProvider({ children }: ChildrenProp) {
     return product ? product.quantity : 0;
   };
 
+  /**
+   * This function returns the total quantity of all products from the cart.
+   * @returns {Number} A number representing the total quantity of all products inside the cart.
+   */
+
   const getTotalProductAmountFromCart = (): number => {
     return globalState.cart.reduce(
       (total, item: CartProduct) => total + item.quantity,
@@ -88,9 +113,14 @@ export function AppProvider({ children }: ChildrenProp) {
     );
   };
 
+  /**
+   * This function returns the total price of the entire cart.
+   * @returns {Number} A number representing the total price of all products in the cart.
+   */
+
   const getTotalPriceFromCart = (): number => {
     return globalState.cart.reduce(
-      (total, item: CartProduct) => total + (item.price * item.quantity),
+      (total, item: CartProduct) => total + item.price * item.quantity,
       0
     );
   };

@@ -3,6 +3,10 @@ import Product from "../models/Product";
 import { faker } from "@faker-js/faker";
 import Manufacturer from "../models/Manufacturer";
 
+/**
+ * This is an array of fake products from which the other 100+ products will be created.
+ */
+
 const divingProducts = [
   {
     name: "Diving Mask",
@@ -84,6 +88,10 @@ const divingProducts = [
   },
 ];
 
+/**
+ * This function generates a random product by using random values.
+ */
+
 const generateDivingProduct = async () => {
   const randomProduct =
     divingProducts[Math.floor(Math.random() * divingProducts.length)];
@@ -99,13 +107,19 @@ const generateDivingProduct = async () => {
     : null;
 
   return {
-    name: `${randomProduct.name} ${Math.floor(Math.random() * divingProducts.length)}`,
+    name: `${randomProduct.name} ${Math.floor(
+      Math.random() * divingProducts.length
+    )}`,
     price: parseFloat(faker.commerce.price({ min: 50, max: 500, dec: 2 })),
     description: randomProduct.description,
     manufacturer: manufacturerId,
     imageUrl: randomProduct.imageUrl,
   };
 };
+
+/**
+ * This function creates the products and seeds the db with them.
+ */
 
 const seedProducts = async () => {
   const collectionSize = await Product.countDocuments();
@@ -130,6 +144,10 @@ const seedProducts = async () => {
   }
 };
 
+/**
+ * This function creates random manufacturures and seeds the db with them.
+ */
+
 const seedManufactuers = async () => {
   const collectionSize = await Manufacturer.countDocuments();
   if (collectionSize === 0) {
@@ -142,6 +160,10 @@ const seedManufactuers = async () => {
   }
 };
 
+/**
+ * This function connects to the db.
+ */
+
 export const connectToDatabase = async (uri: string) => {
   try {
     await mongoose.connect(uri);
@@ -150,6 +172,10 @@ export const connectToDatabase = async (uri: string) => {
     console.error(error);
   }
 };
+
+/**
+ * This is a helper function that initializes the db by connecting to it at seeding it if it is empty.
+ */
 
 export const startDb = async (uri: string) => {
   await connectToDatabase(uri);

@@ -1,6 +1,13 @@
 import Manufactuer from "../models/Manufacturer";
 import { Request, Response } from "express";
 
+/**
+ * Returns an array of manufactuers.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Array} The array of manufactuers.
+ */
+
 export const getAllManufacturers = async (
   req: Request,
   res: Response

@@ -22,15 +22,12 @@ export default function UserOrders({ orders }: UserOrdersProps) {
         ) : (
           <div>
             {orders.map((item, key) => (
-              <Card
-                key={key}
-                className="shadow-grey-300 dark:shadow-slate-600 mb-4 ring"
-              >
+              <Card key={key} className="bg-white dark:bg-[#222831] mb-4 ring">
                 <Link href={`/profile/order/${item.id}`}>
-                <h3 className="text-dark dark:text-white">Order - {key}</h3>
-                <h3 className="text-dark dark:text-white">
-                  Purchase Date - {formatDate(item.purchaseDate)}
-                </h3>
+                  <h3 className="text-dark dark:text-white">Order - {key}</h3>
+                  <h3 className="text-dark dark:text-white">
+                    Purchase Date - {formatDate(item.purchaseDate)}
+                  </h3>
                 </Link>
               </Card>
             ))}
