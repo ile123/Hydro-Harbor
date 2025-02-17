@@ -9,7 +9,7 @@ services:
       depends_on:
         - server
       profiles:
-        - prod
+        - dockerized
 
   server:
     container_name: hydro-harbor-server
@@ -25,7 +25,7 @@ services:
     depends_on:
       - db
     profiles:
-      - prod
+      - dockerized
 
   db:
     image: mongo
@@ -35,5 +35,5 @@ services:
     ports:
       - 27017:27017
     profiles:
-      - prod
-      - dev
+      - dockerized
+      - local
