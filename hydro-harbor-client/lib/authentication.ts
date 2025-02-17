@@ -49,7 +49,3 @@ export const register = async (formData: RegisterValues) => {
     };
   }
 };
-
-export const logout = () => {
-   
-}
